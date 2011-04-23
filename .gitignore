@@ -1,4 +1,6 @@
 *.pyc
+*.swp
 .ropeproject
 .DS_Store
 build
+test.py
