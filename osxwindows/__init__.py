@@ -9,11 +9,6 @@ class App(object):
         self.name = name
         self.windows = windows
 
-class Layout(object):
-    """A window layout for one space"""
-    def __init__(self):
-        super(Layout, self).__init__()
-
 class Window(object):
     """represents a OSX-Window, with position, size and title"""
     def __init__(self, position, size, title, window_ref):
@@ -41,6 +36,10 @@ class Window(object):
          osxaccessibility.resize_window_to(self._window_ref,width,height)
          self.width = width
          self.height = height
+    def set_alpha(self, alpha):
+        ''' will only work in conjunction with the AweSX ScriptingAddition, as Alpha is usually not
+        exposed by the Accessiblity API'''
+        osxaccessibility.set_window_alpha(self._window_ref, alpha)
 
 
 def windowed_apps():

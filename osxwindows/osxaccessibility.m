@@ -181,6 +181,19 @@ resize_window_to(PyObject *self, PyObject *args)
 }
 
 static PyObject *
+set_window_alpha(PyObject *self, PyObject *args)
+{
+  PyObject* window;
+  float alpha;
+  PyArg_ParseTuple(args, "Of", &window, &alpha);
+  AXUIElementRef windowRef = ((WindowReference*)window)->window;
+
+  AXUIElementSetAttributeValue(windowRef, CFSTR("AXAlpha"), CFNumberCreate(NULL, kCFNumberFloat32Type, &alpha));
+
+  Py_RETURN_TRUE;
+}
+
+static PyObject *
 screen_size(PyObject *self, PyObject *args)
 {
     NSRect screen_size = [[NSScreen mainScreen] frame];
@@ -191,7 +204,6 @@ screen_size(PyObject *self, PyObject *args)
     return py_screen_size;
 }
 
-
 static PyMethodDef methods[] = {
   {"authorized", authorized, METH_VARARGS, "Checks whether the app is allowed to access the accessibility API."},
   {"windowed_apps_raw", windowed_apps_raw, METH_VARARGS, "Returns a list of open windows"},
@@ -200,6 +212,7 @@ static PyMethodDef methods[] = {
   {"resize_window_by",resize_window_by, METH_VARARGS, "Resizes a window by x and y pixel."},
   {"resize_window_to", resize_window_to, METH_VARARGS, "Resizes a window to x and y pixel."},
   {"screen_size", screen_size, METH_VARARGS, "Returns the screen size as tuple (width,height)."},
+  {"set_window_alpha", set_window_alpha, METH_VARARGS, "Sets the windows alpha value. Will work only in conjunction with AweSX's ScriptingAddition, as Alpha is usually not exposed by the Accessibility API."},
   {NULL, NULL, 0, NULL}
 };
 
